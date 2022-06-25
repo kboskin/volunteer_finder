@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 import sentry_sdk
 
-DEBUG = os.getenv('DEBUG') == 'True'
+DEBUG = os.getenv('DEBUG') == 'True' or True
 
 
 @dataclass
@@ -44,7 +44,7 @@ class TWILIO:
     account_sid = os.getenv('TWILIO_ACCOUNT_SID')
     auth_token = os.getenv('TWILIO_AUTH_TOKEN')
     verify_sid = os.getenv('TWILIO_VERIFY_SID')
-    enabled = os.getenv('TWILIO_SMS_CHECK_ENABLED') != 'False'
+    enabled = os.getenv('TWILIO_SMS_CHECK_ENABLED') != 'False' and os.getenv('TWILIO_SMS_CHECK_ENABLED')
 
 
 @dataclass

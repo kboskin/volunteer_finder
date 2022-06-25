@@ -17,6 +17,7 @@ sqlalchemy = "*"
 alembic = "*"
 databases = "*"
 asyncpg = "*"
+xmlsec = "*"
 
 [dev-packages]
 

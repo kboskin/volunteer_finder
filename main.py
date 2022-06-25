@@ -5,9 +5,11 @@ import uvicorn
 from fastapi import FastAPI
 import sqlalchemy as sa
 
-from config import init_sentry, SQLALCHEMY_DATABASE_URI, SQLALCHEMY_ECHO
+from app.auth.router import authRouter
+from config import init_sentry, SQLALCHEMY_DATABASE_URI, SQLALCHEMY_ECHO, DEBUG
 
-app = FastAPI()
+app = FastAPI(debug=DEBUG)
+app.include_router(authRouter, prefix="/auth")
 
 DB = databases.Database(SQLALCHEMY_DATABASE_URI)
 metadata = sa.MetaData()

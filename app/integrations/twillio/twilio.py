@@ -13,6 +13,7 @@ verify_client = TWILIO.enabled and client.verify.services(TWILIO.verify_sid)
 class PhoneVerificationStatus(Enum):
     APPROVED = "approved"
     REJECTED = "rejected"
+    PENDING = "pending"
     EXPIRED = "expired"
 
 
@@ -32,7 +33,7 @@ def send_sms_code(to: str) -> bool:
                 # 60205 stands for landline number that can't handle SMS
                 return False
             raise e
-    return False
+    return True
 
 
 def verify_sms_code(phone: str, sms: str):
