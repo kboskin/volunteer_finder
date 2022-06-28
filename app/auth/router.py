@@ -1,11 +1,14 @@
+import dataclasses
+
 from fastapi import APIRouter
-from fastapi import Request
 
 from app.auth.auth import AuthService
+from pydantic import BaseModel
+
+from app.generic.base import BaseSuccessResponse
+from app.profile.user.user import UserService
 
 authRouter = APIRouter()
-
-from pydantic import BaseModel
 
 
 class SendCodeBody(BaseModel):
@@ -19,9 +22,16 @@ class VerifyCodeBody(BaseModel):
 
 @authRouter.post("/code")
 async def request_code(model: SendCodeBody):
-    return await AuthService.send_code(model.phone_number)
+    user = await UserService.get_user_by_phone(model.phone_number)
+    if not user:
+        user = await UserService.create_user_profile(model.phone_number)
+
+    await AuthService.send_code(model.phone_number)
+    return BaseSuccessResponse({"user": dataclasses.asdict(user)})
 
 
 @authRouter.post("/verify")
-async def request_code(model: VerifyCodeBody):
-    return await AuthService.verify_code(model.phone_number, model.code)
+async def verify_code(model: VerifyCodeBody):
+    await AuthService.verify_code(model.phone_number, model.code)
+    user = await UserService.get_user_by_phone(model.phone_number)
+    return BaseSuccessResponse({"user": dataclasses.asdict(user)})

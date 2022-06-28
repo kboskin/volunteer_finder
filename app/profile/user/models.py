@@ -1,10 +1,8 @@
-from dataclasses import field
+from dataclasses import field, dataclass
 
-from pydantic.dataclasses import dataclass
 from typing import List
-from uuid import UUID
 from datetime import datetime
-import sqlalchemy as sa
+from pydantic.json import UUID
 
 
 @dataclass
@@ -37,9 +35,11 @@ class DbUser:
     last_name: str
     phone_number: str
     email: str
-    average_rating: int
-    isActive: bool
+    is_active: bool
     deleted: bool
-    created_time: sa.DateTime
-    deleted_time: sa.DateTime
-    updated_time: sa.DateTime
+    created_time: datetime
+    deleted_time: datetime
+    updated_time: datetime
+
+    class Config:
+        orm_mode = True

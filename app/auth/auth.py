@@ -15,8 +15,6 @@ class AuthService:
 
         if not send_sms_code(phone):
             raise AuthException("invalid phone")
-        else:
-            return {"message": "success"}
 
     @classmethod
     async def verify_code(cls, phone, code):

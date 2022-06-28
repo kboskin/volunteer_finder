@@ -1,22 +1,34 @@
-from logging import DEBUG
-import databases
+import asyncio
 
 import uvicorn
 from fastapi import FastAPI
-import sqlalchemy as sa
+from starlette.middleware.cors import CORSMiddleware
 
 from app.auth.router import authRouter
-from config import init_sentry, SQLALCHEMY_DATABASE_URI, SQLALCHEMY_ECHO, DEBUG
+from config import init_sentry, DEBUG, CORS
+from enigine import DB
 
 app = FastAPI(debug=DEBUG)
 app.include_router(authRouter, prefix="/auth")
 
-DB = databases.Database(SQLALCHEMY_DATABASE_URI)
-metadata = sa.MetaData()
-engine = sa.create_engine(
-    SQLALCHEMY_DATABASE_URI,
-    echo=SQLALCHEMY_ECHO
-)
+if DEBUG:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=CORS.allowed_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+
+async def connect_to_db():
+    return await DB.connect()
+
+
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(connect_to_db())
+
 
 if __name__ == '__main__':
     app.debug = DEBUG
