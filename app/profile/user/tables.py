@@ -2,12 +2,10 @@ import uuid
 
 import sqlalchemy as sa
 from sqlalchemy import func, ForeignKey
-from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import expression
 from sqlalchemy.dialects.postgresql import UUID
-from enigine import engine
-
-Base = declarative_base(bind=engine)
+from enigine import Base
 
 
 class User(Base):
