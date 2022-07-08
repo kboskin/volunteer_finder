@@ -1,18 +1,17 @@
 import uuid
 
 import sqlalchemy as sa
-from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.sql import expression
+from sqlalchemy.orm import relationship
 
-from enigine import metadata
+from enigine import Base
 
-Categories = sa.Table(
-    "categories",
-    metadata,
-    sa.Column('category_id', UUID(as_uuid=True), primary_key=True, default=uuid.uuid4),
-    sa.Column('category_name', sa.String),
-    sa.Column('category_description', sa.String),
-    sa.Column('parent_id', sa.ForeignKey("categories.category_id")),
-    sa.Column('is_active', sa.Boolean, server_default=expression.true(), nullable=False),
-    sa.Column('deleted', sa.Boolean, server_default=expression.false(), nullable=False),
-)
+
+class Catalogue(Base):
+    __tablename__ = "catalogue"
+    id = sa.Column('id', sa.Integer, primary_key=True)
+    category_name = sa.Column("category_name", sa.String)
+    parent_id = sa.ForeignKey("catalogue.id")
+    parent = relationship('Catalogue', remote_side=[id])
+
+
+Base.metadata.create_all()
