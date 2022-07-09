@@ -1,6 +1,3 @@
-import dataclasses
-import json
-
 from fastapi import APIRouter
 
 from app.auth.auth import AuthService

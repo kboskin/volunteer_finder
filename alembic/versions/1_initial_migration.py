@@ -1,8 +1,8 @@
-"""initial revision
+"""Initial migration
 
 Revision ID: 1
 Revises: 
-Create Date: 2022-07-03 15:43:07.300897
+Create Date: 2022-07-09 14:39:29.320278
 
 """
 from alembic import op

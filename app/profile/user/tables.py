@@ -5,6 +5,7 @@ from sqlalchemy import func, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import expression
 from sqlalchemy.dialects.postgresql import UUID
+
 from enigine import Base
 
 
@@ -35,6 +36,3 @@ class UserFeedback(Base):
     rating = sa.Column('rating', sa.DECIMAL, nullable=False)
     feedback = sa.Column('feedback', sa.String, nullable=False)
     date = sa.Column('date', sa.DateTime, server_default=func.now(), nullable=False)
-
-
-Base.metadata.create_all()
