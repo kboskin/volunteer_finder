@@ -1,9 +1,10 @@
 import asyncio
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from starlette.middleware.cors import CORSMiddleware
 
+from app.auth import IS_AUTHENTICATED
 from app.auth.router import authRouter
 from app.catalogue.router import catalogueRouter
 from config import init_sentry, DEBUG, CORS
@@ -11,7 +12,7 @@ from enigine import DB
 
 app = FastAPI(debug=DEBUG)
 app.include_router(authRouter, prefix="/auth")
-app.include_router(catalogueRouter, prefix="/catalogue")
+app.include_router(catalogueRouter, prefix="/catalogue", dependencies=[IS_AUTHENTICATED])
 
 if DEBUG:
     app.add_middleware(

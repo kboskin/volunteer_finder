@@ -18,6 +18,7 @@ alembic = "*"
 databases = "*"
 asyncpg = "*"
 xmlsec = "*"
+python-jose = "*"
 
 [dev-packages]
 
