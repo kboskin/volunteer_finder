@@ -2,6 +2,10 @@ class AuthException(Exception):
     pass
 
 
+class CredentialsException(AuthException):
+    pass
+
+
 class CodeExpiredError(AuthException):
 
     def __init__(self, message, status):

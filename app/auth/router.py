@@ -25,11 +25,17 @@ async def request_code(model: SendCodeBody):
         user = await UserService.create_user_profile(model.phone_number)
 
     await AuthService.send_code(model.phone_number)
-    return BaseSuccessResponse({"user": object_as_dict(user)})
+    return BaseSuccessResponse(
+        {
+            "user": object_as_dict(user),
+            "token": AuthService.get_token(model.phone_number)
+        }
+    )
 
 
 @authRouter.post("/verify")
 async def verify_code(model: VerifyCodeBody):
-    await AuthService.verify_code(model.phone_number, model.code)
-    user = await UserService.get_user_by_phone(model.phone_number)
-    return BaseSuccessResponse({"user": object_as_dict(user)})
+    phone_number = model.phone_number
+    await AuthService.verify_code(phone_number, model.code)
+    user = await UserService.get_user_by_phone(phone_number)
+    return BaseSuccessResponse({"user": object_as_dict(user), "token": AuthService.get_token(phone_number)})
